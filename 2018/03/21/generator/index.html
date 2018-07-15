@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="理解 Generator (生成器)generator 和 iterator 的概念非常類似，同樣都是調 next() 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 for...of 遍歷。 按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉">
+<meta name="keywords" content="generator,Promise,curry">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 Generator">
+<meta property="og:url" content="http://spaceman007.github.io/2018/03/21/generator/index.html">
+<meta property="og:site_name" content="Spaceman007 的空間站">
+<meta property="og:description" content="理解 Generator (生成器)generator 和 iterator 的概念非常類似，同樣都是調 next() 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 for...of 遍歷。 按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-15T12:09:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解 Generator">
+<meta name="twitter:description" content="理解 Generator (生成器)generator 和 iterator 的概念非常類似，同樣都是調 next() 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 for...of 遍歷。 按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉">
+
+
+
+
+
+
+  <link rel="canonical" href="http://spaceman007.github.io/2018/03/21/generator/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>理解 Generator | Spaceman007 的空間站</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Spaceman007 的空間站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">仰觀宇宙之大</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/blog/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/blog/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />Sitemap</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://spaceman007.github.io/blog/2018/03/21/generator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="spaceman007">
+      <meta itemprop="description" content="滾滾長江東逝水">
+      <meta itemprop="image" content="/blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Spaceman007 的空間站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解 Generator
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-03-21 17:29:53" itemprop="dateCreated datePublished" datetime="2018-03-21T17:29:53+08:00">2018-03-21</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-07-15 20:09:37" itemprop="dateModified" datetime="2018-07-15T20:09:37+08:00">2018-07-15</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/blog/categories/es6/" itemprop="url" rel="index"><span itemprop="name">es6</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="理解-Generator-生成器"><a href="#理解-Generator-生成器" class="headerlink" title="理解 Generator (生成器)"></a>理解 Generator (生成器)</h1><p>generator 和 iterator 的概念非常類似，同樣都是調 <code>next()</code> 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 <code>for...of</code> 遍歷。</p>
+<p>按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉助 <code>function*</code> 和 <code>yield</code>。</p>
+<p>舉例來說：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'hello'</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'world'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> gener = gen() <span class="comment">// 得到一個生成器，或叫遍歷器</span></span><br><span class="line">gener.next() <span class="comment">// &#123; value: 'hello', done: false &#125;</span></span><br><span class="line">gener.next() <span class="comment">// &#123; value: 'world', done: false &#125;</span></span><br><span class="line">gener.next() <span class="comment">// &#123; value: undefined, done: true&#125;</span></span><br></pre></td></tr></table></figure>
+<p>理解了 generator 就是 <code>function</code> 變出來的 itarator，就可以參考 <a href="http://blog.csdn.net/marshall001/article/details/79628181" target="_blank" rel="noopener">iterator</a> 了。不過 genertor 也有與 iterator 不一樣的地方:</p>
+<h2 id="在-next-中回傳參數"><a href="#在-next-中回傳參數" class="headerlink" title="在 next 中回傳參數"></a>在 next 中回傳參數</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'1st: '</span> + (<span class="keyword">yield</span> <span class="string">'hello'</span>))</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'2nd: '</span> + (<span class="keyword">yield</span> <span class="string">'world'</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> gener = gen()</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(gener.next(<span class="string">'first next'</span>))</span><br><span class="line"><span class="built_in">console</span>.log(gener.next(<span class="string">'second next'</span>))</span><br><span class="line"><span class="built_in">console</span>.log(gener.next(<span class="string">'third next'</span>))</span><br></pre></td></tr></table></figure>
+<p>打印結果爲：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; value: 'hello', done: false &#125;</span><br><span class="line">1st: second next</span><br><span class="line">&#123; value: 'world', done: false &#125;</span><br><span class="line">2nd: third next</span><br><span class="line">&#123; value: undefined, done: true &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>next 方法可以帶一個參數，可以當作上一條 yield 語句的返回值。</p>
+</blockquote>
+<h2 id="generator-可以用-return-提前結束遍歷"><a href="#generator-可以用-return-提前結束遍歷" class="headerlink" title="generator 可以用 return 提前結束遍歷"></a>generator 可以用 return 提前結束遍歷</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'hello'</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'world'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> gener = gen()</span><br><span class="line">gener.next() <span class="comment">// &#123; value: 'hello', done: false &#125;</span></span><br><span class="line">gener.return(<span class="string">'ended'</span>) <span class="comment">// &#123; value: 'ended, done: true &#125;</span></span><br><span class="line">gener.next() <span class="comment">// &#123; value: undefined, done: true &#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="可在遍歷器外部調用-throw-拋出錯誤，而在遍歷器內部捕獲"><a href="#可在遍歷器外部調用-throw-拋出錯誤，而在遍歷器內部捕獲" class="headerlink" title="可在遍歷器外部調用 throw 拋出錯誤，而在遍歷器內部捕獲"></a>可在遍歷器外部調用 <code>throw</code> 拋出錯誤，而在遍歷器內部捕獲</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">'hello'</span></span><br><span class="line">        <span class="keyword">yield</span> <span class="string">'world'</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(e)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> gener = gen()</span><br><span class="line">gener.next()</span><br><span class="line">gener.throw(<span class="string">'unexpected'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="generator-嵌套"><a href="#generator-嵌套" class="headerlink" title="generator 嵌套"></a>generator 嵌套</h2><p>當 generator 嵌套時，內部 generator 需要 <code>yield* generator</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'hello'</span></span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'world'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bar = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="string">'bar'</span></span><br><span class="line">    <span class="keyword">yield</span>* foo()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> gener = bar()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> itm <span class="keyword">of</span> gener) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(itm)  <span class="comment">// 'bar', 'hello', 'world'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="generator-變異步爲-‘同步’"><a href="#generator-變異步爲-‘同步’" class="headerlink" title="generator - 變異步爲 ‘同步’"></a>generator - 變異步爲 ‘同步’</h1><p>generator 與 curry 的結合可以使異步應用用同步的方式書寫，使得代碼更爲清晰簡潔。</p>
+<h2 id="curry-（柯里化）"><a href="#curry-（柯里化）" class="headerlink" title="curry （柯里化）"></a>curry （柯里化）</h2><p><code>curry</code> 是以數學家 <strong><a href="https://en.wikipedia.org/wiki/Haskell_Curry" target="_blank" rel="noopener">Haskell Curry</a></strong> 的名字命名的。Haskell Curry 也是 <strong><a href="https://www.haskell.org/" target="_blank" rel="noopener">Haskell</a></strong> 語言的發明者。</p>
+<p><code>curry</code> 是一種 <em>函數參數</em> 拆分技術。通過拆分函數參數，我們可以得到新的函數。使用 curry 以後，函數變得更加靈活，更具有可玩性。</p>
+<p>下面以 add 函數舉例說明 curry 的用處:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> args = <span class="built_in">Array</span>.prototype.slice.apply(<span class="built_in">arguments</span>)</span><br><span class="line">    <span class="keyword">return</span> args.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> add1 = add.curry(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">const</span> add123 = add.curry(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="built_in">console</span>.log(add1(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>))   <span class="comment">// 7</span></span><br><span class="line"><span class="built_in">console</span>.log(add123(<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)) <span class="comment">// 21</span></span><br></pre></td></tr></table></figure>
+<p><code>add1</code> 其實是將 1 與傳遞給 add1 的參數組合在一起，再傳遞給 add 函數。</p>
+<p><code>add123</code> 其實是將 <code>1, 2, 3</code> 與傳遞給 add123 的參數組合在一起，再傳遞給 add 函數。</p>
+<p>下面給出 curry 技術的 js 實現：    </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.method(<span class="string">'curry'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> slice = <span class="built_in">Array</span>.prototype.slice,</span><br><span class="line">        args = slice.apply(<span class="built_in">arguments</span>),</span><br><span class="line">        that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> that.apply(<span class="literal">null</span>, args.concat(slice.apply(<span class="built_in">arguments</span>)))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>上面的代碼有點繞，主要是 <code>arguments</code> 是一個具有 <code>length</code> 屬性的 <code>Array like</code>，不得不先用 <code>slice</code>做點轉換。使用 es6 可以簡化：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Function</span>.method(<span class="string">'curry'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">...args</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> that = <span class="keyword">this</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">...args2</span>) =&gt;</span> that.apply(<span class="literal">null</span>, args.concat(args2))</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="generator-中使用-curry"><a href="#generator-中使用-curry" class="headerlink" title="generator 中使用 curry"></a>generator 中使用 curry</h2><blockquote>
+<p>參考了阮一峯老師的《<a href="http://es6.ruanyifeng.com/#docs/generator-async" target="_blank" rel="noopener">Generator 函数的异步应用</a>》</p>
+</blockquote>
+<h3 id="使用-promise-逐一讀取文件"><a href="#使用-promise-逐一讀取文件" class="headerlink" title="使用 promise 逐一讀取文件"></a>使用 promise 逐一讀取文件</h3><p><code>fs.readFile</code> 是一個異步函數，讀取一個文件的用法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line">fs.readFile(<span class="string">'./file.js'</span>, (err, data) =&gt; &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) <span class="keyword">throw</span> err</span><br><span class="line">    <span class="keyword">else</span> <span class="built_in">console</span>.log(data.toString())</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>當有多個文件，需要逐一讀取時，如果用 promise 可以這樣做:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> read = <span class="function"><span class="keyword">function</span> (<span class="params">fileName</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        fs.readFile(fileName, (err, data) =&gt; &#123;</span><br><span class="line">            <span class="keyword">if</span> (err) reject(err)</span><br><span class="line">            <span class="keyword">else</span> resolve(data)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">read(<span class="string">'./file1.js'</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data.toString())) <span class="comment">// 處理 file1.js</span></span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> read(<span class="string">'./file2.js'</span>))</span><br><span class="line">  .then(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data.toString())) <span class="comment">// 處理 file2.js</span></span><br><span class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err))</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'started...'</span>)</span><br></pre></td></tr></table></figure>
+<p>執行結果爲:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">started...</span><br><span class="line">// file1 內容</span><br><span class="line">// file2 內容</span><br></pre></td></tr></table></figure>
+<p>雖然 <code>.then</code> 的寫法避開了 回調黑洞，使代碼的寫法近似同步，但過多的 <code>then</code> 還不夠簡潔優雅。</p>
+<h3 id="使用-generator-逐一讀取文件"><a href="#使用-generator-逐一讀取文件" class="headerlink" title="使用 generator 逐一讀取文件"></a>使用 generator 逐一讀取文件</h3><p>在使用 generator 時，我們可以用 <code>next(value)</code> 往生成器中回傳參數。當初並不明白 <code>next(value)</code> 有何意義，如今可以解惑了。看下面這個函數:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">readGen</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> r1 = <span class="keyword">yield</span> read(<span class="string">'./file1.js'</span>) <span class="comment">// 暫且不管 read 函數的定義</span></span><br><span class="line">    <span class="built_in">console</span>.log(r1.toString())</span><br><span class="line">    <span class="keyword">const</span> r2 = <span class="keyword">yield</span> read(<span class="string">'./file2.js'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(r2.toString())</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> g = readGen()</span><br><span class="line">g.next()</span><br></pre></td></tr></table></figure>
+<p>我希望 <code>readGen</code> 中的 <code>file1.js</code>和 <code>file2.js</code> 能依次讀取。</p>
+<p>要實現這個目標，我得利用 <code>g.next()</code> 獲取 generator 執行狀態，並且處理完一個文件後，再次調用 <code>g.next()</code> 進行下一步處理。直到 <code>done === &#39;true&#39;</code>。</p>
+<p>在 <code>g.next()</code> 的狀態中，<code>value</code> 可以用來放 <code>readFile</code> 的回調函數。而這，正式 <code>curry</code> 大顯身手的地方。</p>
+<p>下面來實現 <code>read</code> 函數:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> read = <span class="function"><span class="keyword">function</span> (<span class="params">fileName</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fs.readFile.curry(fileName) <span class="comment">// 返回只含一個 callback 參數的函數</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這樣就將 <code>readFile</code> 變成了只有一個 callback 參數的函數。當執行 <code>g.next()</code> 時，這個函數賦予了 <code>value</code>，我們就能在 <code>g.next().value(cb)</code> 中處理了。</p>
+<p>注意 <code>read</code> 函數，它的功能是返回了一個函數，這個函數記錄了 <code>fileName</code>。這也可以用閉包實現:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> read = <span class="function"><span class="keyword">function</span> (<span class="params">fileName</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> fs.readFile(fileName, cb)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>關鍵</strong> 之處在於，我們需要在 <code>value</code> 中獲取到 <code>readFile</code> 的回調信息，並且能夠繼續 <code>g.next()</code> 使函數繼續執行。下面的 <code>run</code> 函數確保 <code>readGen</code> 逐一執行直到完成:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span> (<span class="params">gen</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> g = gen()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">next</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data) <span class="built_in">console</span>.log(data.toString())</span><br><span class="line">        <span class="keyword">const</span> ret = g.next(data)</span><br><span class="line">        <span class="keyword">if</span> (ret.done) <span class="keyword">return</span></span><br><span class="line">        <span class="keyword">else</span> ret.value(next)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>next</code> 函數就是往 curry 化之後那個函數裏傳的參數。通過在 <code>next</code> 中判斷 generator 是否執行完成（如果還沒執行完，則繼續調用 <code>g.next()</code> ），最終實現文件的逐一讀取。</p>
+<p>總結一下，使用 generator 將異步變爲同步，就是</p>
+<ul>
+<li>利用 <code>function*</code> 和 <code>yield</code> 以同步的方式書寫代碼</li>
+<li>定義一個<strong>自動執行器</strong>，使 generator 執行完成。</li>
+</ul>
+<h1 id="從-generator-到-sync"><a href="#從-generator-到-sync" class="headerlink" title="從 generator 到 sync"></a>從 generator 到 sync</h1><p>由於 generator 實現了以同步方式書寫代碼，並在實際使用中反饋良好，但畢竟需要自己實現執行方式，於是大家就想爲什麼不提供一種新的語法來做這件事呢，它能包含隱式的自動執行方式，使代碼更爲簡潔優雅。</p>
+<p>這個語法就是 <code>sync</code> 和 <code>await</code> 。注意它還不是 es6 的標準，而是屬於 es7 ，但也可以用 es6 實現。在不支持 es7 的環境中，可以用 babel 轉碼。我在 <code>node v8.9.0</code> 中測試已支持 <code>aync</code>。</p>
+<p><code>sync</code> 函數的使用十分簡單，只相當於對上面的 generator 的方式作了兩個修改:</p>
+<ul>
+<li><code>*</code> &rarr; <code>sync</code></li>
+<li><code>yield</code> &rarr; await</li>
+</ul>
+<p>於是，採用 <code>sync</code> 和 <code>await</code> 改寫上面的代碼：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</span><br><span class="line"><span class="keyword">const</span> readAll = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> r1 = <span class="keyword">await</span> fs.readFile(<span class="string">'./file1.js'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(r1.toString())</span><br><span class="line">    <span class="keyword">const</span> r2 = <span class="keyword">await</span> fs.readFile(<span class="string">'./file2.js'</span>)</span><br><span class="line">    <span class="built_in">console</span>.log(r2.toString())</span><br><span class="line">&#125;</span><br><span class="line">readAll()</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'--- begin ---'</span>)</span><br></pre></td></tr></table></figure>
+<p>執行結果:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--- begin ---</span><br><span class="line">// content of file1.js</span><br><span class="line">// content of file2.js</span><br></pre></td></tr></table></figure>
+<p>採用 <code>async</code>  時，需注意:</p>
+<ul>
+<li>await 後面可以是 <strong>Promise</strong> 或者 原始類型值，如果是 promise，因爲可能 reject，最好放在 try…catch 裏。</li>
+<li>async 返回一個 Promise，可用 <code>then</code> 添加下一步操作。</li>
+</ul>
+<h1 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h1><p>這是我學習 generator 過程中的總結，主要參考了《javascript 語言精粹》和 《<a href="http://es6.ruanyifeng.com" target="_blank" rel="noopener">ES6 標準入門</a>》。这两本书都非常不錯，可以作为手边书，隨時翻閱。</p>
+<p>generator 的用法很好理解，但深入以後才發現並不簡單，其中牽扯了許多知識點，比如 <code>Iterator</code>、<code>curry</code>、<code>Promise</code>、<code>async</code>，還包含了人們爲解決異步書寫問題所作出的很多努力。</p>
+<p>以上內容僅反映我對一些概念的當下理解，並不完善，比如 “generator 與 協程” 就沒提及。同時也深感要向讀者解釋清楚一個概念需要多少努力，除非自己能深入理解並舉一反三，而且要邏輯清晰，並用儘可能簡單的語言闡釋出來，否則就可能誤人子弟，浪費別人時間了。推薦購買正版《ES6 標準入門》，遇到不懂的好隨時查閱。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/generator/" rel="tag"># generator</a>
+          
+            <a href="/blog/tags/Promise/" rel="tag"># Promise</a>
+          
+            <a href="/blog/tags/curry/" rel="tag"># curry</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/blog/2018/03/12/promise/" rel="next" title="我不是很懂 Promise">
+                <i class="fa fa-chevron-left"></i> 我不是很懂 Promise
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/avatar.jpg"
+                alt="spaceman007" />
+            
+              <p class="site-author-name" itemprop="name">spaceman007</p>
+              <p class="site-description motion-element" itemprop="description">滾滾長江東逝水</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/spaceman007" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#理解-Generator-生成器"><span class="nav-number">1.</span> <span class="nav-text">理解 Generator (生成器)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在-next-中回傳參數"><span class="nav-number">1.1.</span> <span class="nav-text">在 next 中回傳參數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generator-可以用-return-提前結束遍歷"><span class="nav-number">1.2.</span> <span class="nav-text">generator 可以用 return 提前結束遍歷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可在遍歷器外部調用-throw-拋出錯誤，而在遍歷器內部捕獲"><span class="nav-number">1.3.</span> <span class="nav-text">可在遍歷器外部調用 throw 拋出錯誤，而在遍歷器內部捕獲</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generator-嵌套"><span class="nav-number">1.4.</span> <span class="nav-text">generator 嵌套</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#generator-變異步爲-‘同步’"><span class="nav-number">2.</span> <span class="nav-text">generator - 變異步爲 ‘同步’</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#curry-（柯里化）"><span class="nav-number">2.1.</span> <span class="nav-text">curry （柯里化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generator-中使用-curry"><span class="nav-number">2.2.</span> <span class="nav-text">generator 中使用 curry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-promise-逐一讀取文件"><span class="nav-number">2.2.1.</span> <span class="nav-text">使用 promise 逐一讀取文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-generator-逐一讀取文件"><span class="nav-number">2.2.2.</span> <span class="nav-text">使用 generator 逐一讀取文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#從-generator-到-sync"><span class="nav-number">3.</span> <span class="nav-text">從 generator 到 sync</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#結語"><span class="nav-number">4.</span> <span class="nav-text">結語</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">spaceman007</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

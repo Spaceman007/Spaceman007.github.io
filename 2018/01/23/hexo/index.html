@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/blog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/blog/css/main.css?v=6.3.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png?v=6.3.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png?v=6.3.0">
+
+
+  <link rel="mask-icon" href="/blog/images/logo.svg?v=6.3.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '6.3.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="使用12345$ npm install hexo-cli -g$ hexo init my-blog$ cd my-blog$ npm install$ hexo server 1. 常用命令   命令 全寫 含義     hexo g hexo generate 生成靜態文件   hexo s hexo server 啓動本地web服務，用於預覽   hexo d hexo deploy 部署">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用hexo搭建個人博客">
+<meta property="og:url" content="http://spaceman007.github.io/2018/01/23/hexo/index.html">
+<meta property="og:site_name" content="Spaceman007 的空間站">
+<meta property="og:description" content="使用12345$ npm install hexo-cli -g$ hexo init my-blog$ cd my-blog$ npm install$ hexo server 1. 常用命令   命令 全寫 含義     hexo g hexo generate 生成靜態文件   hexo s hexo server 啓動本地web服務，用於預覽   hexo d hexo deploy 部署">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-15T04:27:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="用hexo搭建個人博客">
+<meta name="twitter:description" content="使用12345$ npm install hexo-cli -g$ hexo init my-blog$ cd my-blog$ npm install$ hexo server 1. 常用命令   命令 全寫 含義     hexo g hexo generate 生成靜態文件   hexo s hexo server 啓動本地web服務，用於預覽   hexo d hexo deploy 部署">
+
+
+
+
+
+
+  <link rel="canonical" href="http://spaceman007.github.io/2018/01/23/hexo/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>用hexo搭建個人博客 | Spaceman007 的空間站</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Spaceman007 的空間站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">仰觀宇宙之大</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/blog/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/blog/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/blog/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/blog/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/blog/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-sitemap">
+    <a href="/blog/sitemap.xml" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />Sitemap</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://spaceman007.github.io/blog/2018/01/23/hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="spaceman007">
+      <meta itemprop="description" content="滾滾長江東逝水">
+      <meta itemprop="image" content="/blog/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Spaceman007 的空間站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">用hexo搭建個人博客
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-01-23 15:15:37" itemprop="dateCreated datePublished" datetime="2018-01-23T15:15:37+08:00">2018-01-23</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2018-07-15 12:27:13" itemprop="dateModified" datetime="2018-07-15T12:27:13+08:00">2018-07-15</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> npm install hexo-cli -g</span><br><span class="line"><span class="meta">$</span> hexo init my-blog</span><br><span class="line"><span class="meta">$</span> cd my-blog</span><br><span class="line"><span class="meta">$</span> npm install</span><br><span class="line"><span class="meta">$</span> hexo server</span><br></pre></td></tr></table></figure>
+<h2 id="1-常用命令"><a href="#1-常用命令" class="headerlink" title="1. 常用命令"></a>1. 常用命令</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>全寫</th>
+<th>含義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hexo g</td>
+<td>hexo generate</td>
+<td>生成靜態文件</td>
+</tr>
+<tr>
+<td>hexo s</td>
+<td>hexo server</td>
+<td>啓動本地web服務，用於預覽</td>
+</tr>
+<tr>
+<td>hexo d</td>
+<td>hexo deploy</td>
+<td>部署（到github pages等）</td>
+</tr>
+<tr>
+<td>hexo new ‘postName’</td>
+<td></td>
+<td>新建文章</td>
+</tr>
+<tr>
+<td>hexo new page ‘pageName’</td>
+<td></td>
+<td>新建頁面</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-配置說明（-config-yml）"><a href="#2-配置說明（-config-yml）" class="headerlink" title="2. 配置說明（_config.yml）"></a>2. 配置說明（_config.yml）</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">zh-Hans</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shenzhen</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 網址</span></span><br><span class="line"><span class="attr">url:</span> <span class="attr">https://spaceman007.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/blog</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 頭像, 將 avatar.jpg 放到 source/images 下</span></span><br><span class="line"><span class="attr">avatar:</span> <span class="string">/images/avatar.jpg</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 代碼塊設置</span></span><br><span class="line"><span class="attr">highlight:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span> <span class="comment"># 使用代碼高亮</span></span><br><span class="line"><span class="attr">  line_number:</span> <span class="literal">true</span> <span class="comment"># 顯示行號</span></span><br><span class="line"><span class="attr">  auto_detect:</span> <span class="literal">true</span> <span class="comment"># 自動檢測語言</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分頁配置</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署配置</span></span><br><span class="line"><span class="comment"># 需要先安裝 hexo-deployer-git: `npm install hexo-deployer-git --save`</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repo:</span></span><br><span class="line">    <span class="comment"># 部署到coding, 曲線註釋，可同時部署</span></span><br><span class="line">    <span class="comment"># coding: git@git.coding.net:spaceman007/blog.git,master</span></span><br><span class="line">    <span class="string">git@github.com:spaceman007.github.io.git,master</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-使用主題"><a href="#3-使用主題" class="headerlink" title="3. 使用主題"></a>3. 使用主題</h2><h3 id="3-1-Next主題"><a href="#3-1-Next主題" class="headerlink" title="3.1 Next主題"></a>3.1 Next主題</h3><p><strong>下載主題</strong>: <code>$ git clone https://github.com/theme-next/hexo-theme-next</code></p>
+<p><strong>啓用主題</strong>:</p>
+<h4 id="3-1-1-編輯根路徑下的-config-yml-修改如下"><a href="#3-1-1-編輯根路徑下的-config-yml-修改如下" class="headerlink" title="3.1.1 編輯根路徑下的 _config.yml, 修改如下"></a>3.1.1 編輯根路徑下的 <code>_config.yml</code>, 修改如下</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># theme</span></span><br><span class="line"><span class="comment"># theme: false</span></span><br><span class="line"><span class="comment"># theme: landscape</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲"><a href="#3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲" class="headerlink" title="3.1.2 在themes/next下，編輯 _config.yml, 選用 Pisces, 修改爲"></a>3.1.2 在themes/next下，編輯 <code>_config.yml</code>, 選用 Pisces, 修改爲</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#theme: Muse</span></span><br><span class="line"><span class="comment">#theme: Mist</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">Pisces</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-1-3-菜單設置"><a href="#3-1-3-菜單設置" class="headerlink" title="3.1.3 菜單設置"></a>3.1.3 菜單設置</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line"><span class="attr">  home:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">  categories:</span> <span class="string">/categories</span></span><br><span class="line"><span class="attr">  archives:</span> <span class="string">/archives</span></span><br><span class="line"><span class="attr">  tags:</span> <span class="string">/tags</span></span><br><span class="line"><span class="attr">  about:</span> <span class="string">/about</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404.html</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-1-4-文章代碼主題設置"><a href="#3-1-4-文章代碼主題設置" class="headerlink" title="3.1.4 文章代碼主題設置"></a>3.1.4 文章代碼主題設置</h4><blockquote>
+<p>Next主题总共支持5种主题，默认主题是白色的normal。可以通过修改next主题下的_config.yml的highlight字段，来设置代码主题</p>
+</blockquote>
+<h4 id="3-1-5-社交連接設置"><a href="#3-1-5-社交連接設置" class="headerlink" title="3.1.5 社交連接設置"></a>3.1.5 社交連接設置</h4><p>  修改 themes/next/_config.yml的social字段：</p>
+  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line"><span class="attr">  Github:</span> <span class="attr">https://www.github.com/spaceman007</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-1-6-首頁文章摘要設置"><a href="#3-1-6-首頁文章摘要設置" class="headerlink" title="3.1.6 首頁文章摘要設置"></a>3.1.6 首頁文章摘要設置</h4><p>  next默认首页文章显示所有内容，想要只显示摘要，修改next主题下_config.yml的auto_excerpt字段:</p>
+  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  length:</span> <span class="number">150</span> <span class="comment"># 顯示摘要字數</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-1-7-添加菜單頁面"><a href="#3-1-7-添加菜單頁面" class="headerlink" title="3.1.7 添加菜單頁面"></a>3.1.7 添加菜單頁面</h4><p>  做完上一步会发现在首页点击菜单上的分类、归档等页面都会报错，提示没有该页面，所以需要添加各个菜单页面，定位到站点文件夹，在终端中执行新建页面指令：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new page tags</span><br><span class="line"><span class="meta">$</span> hexo new page categories</span><br><span class="line"><span class="meta">$</span> hexo new page about</span><br></pre></td></tr></table></figure>
+<h4 id="3-1-8-使用gitcommet添加評論"><a href="#3-1-8-使用gitcommet添加評論" class="headerlink" title="3.1.8 使用gitcommet添加評論"></a>3.1.8 使用gitcommet添加評論</h4><p>需要在<a href="https://github.com/settings/developers" target="_blank" rel="noopener">這裏</a>申請一個 OAuth App, 並將信息填入 next/_config.yml 中:<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitment:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  github_user:</span> <span class="string">spaceman007</span></span><br><span class="line"><span class="attr">  github_repo:</span> <span class="string">Spaceman007.github.io</span></span><br><span class="line"><span class="attr">  client_id:</span> <span class="string">剛申請的</span></span><br><span class="line"><span class="attr">  client_secret:</span> <span class="string">剛申請的</span></span><br></pre></td></tr></table></figure></p>
+<p>這時，在本地運行，評論區是禁止的，<code>hexo d</code> 發佈到github上就可以了。</p>
+<h1 id="資源"><a href="#資源" class="headerlink" title="資源"></a>資源</h1><ul>
+<li><a href="https://hexo.io/" target="_blank" rel="noopener">hexo官網</a></li>
+<li><a href="sinat_2129298://notes.wanghao.work/2015-10-21-%E4%B8%BANexT%E4%B8%BB%E9%A2%98%E6%B7%BB%E5%8A%A0%E6%96%87%E7%AB%A0%E9%98%85%E8%AF%BB%E9%87%8F%E7%BB%9F%E8%AE%A1%E5%8A%9F%E8%83%BD.html#%E9%85%8D%E7%BD%AELeanCloud">爲NexT主題添加文章月度量統計功能</a></li>
+<li><a href="https://imsun.net/posts/gitment-introduction/" target="_blank" rel="noopener">Gitment：使用 GitHub Issues 搭建评论系统</a></li>
+<li><a href="https://www.wangyiting.win/2017/05/16/hexo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA.html" target="_blank" rel="noopener">Hexo博客搭建</a></li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/blog/tags/hexo/" rel="tag"># hexo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/blog/2018/03/12/promise/" rel="prev" title="我不是很懂 Promise">
+                我不是很懂 Promise <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/blog/images/avatar.jpg"
+                alt="spaceman007" />
+            
+              <p class="site-author-name" itemprop="name">spaceman007</p>
+              <p class="site-description motion-element" itemprop="description">滾滾長江東逝水</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/blog/archives/">
+                
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/blog/categories/index.html">
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/blog/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/spaceman007" target="_blank" title="GitHub"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常用命令"><span class="nav-number">1.1.</span> <span class="nav-text">1. 常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置說明（-config-yml）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置說明（_config.yml）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-使用主題"><span class="nav-number">1.3.</span> <span class="nav-text">3. 使用主題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Next主題"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Next主題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-編輯根路徑下的-config-yml-修改如下"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.1.1 編輯根路徑下的 _config.yml, 修改如下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">3.1.2 在themes/next下，編輯 _config.yml, 選用 Pisces, 修改爲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-菜單設置"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">3.1.3 菜單設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-文章代碼主題設置"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">3.1.4 文章代碼主題設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5-社交連接設置"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">3.1.5 社交連接設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-首頁文章摘要設置"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">3.1.6 首頁文章摘要設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-7-添加菜單頁面"><span class="nav-number">1.3.1.7.</span> <span class="nav-text">3.1.7 添加菜單頁面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-8-使用gitcommet添加評論"><span class="nav-number">1.3.1.8.</span> <span class="nav-text">3.1.8 使用gitcommet添加評論</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#資源"><span class="nav-number">2.</span> <span class="nav-text">資源</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">spaceman007</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Gemini</a> v6.3.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/blog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/utils.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/motion.js?v=6.3.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/affix.js?v=6.3.0"></script>
+
+  <script type="text/javascript" src="/blog/js/src/schemes/pisces.js?v=6.3.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/blog/js/src/scrollspy.js?v=6.3.0"></script>
+<script type="text/javascript" src="/blog/js/src/post-details.js?v=6.3.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/blog/js/src/bootstrap.js?v=6.3.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
