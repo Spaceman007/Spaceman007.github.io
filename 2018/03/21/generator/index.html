@@ -109,10 +109,10 @@
 
 
   <meta name="description" content="理解 Generator (生成器)generator 和 iterator 的概念非常類似，同樣都是調 next() 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 for...of 遍歷。 按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉">
-<meta name="keywords" content="generator,Promise,curry">
+<meta name="keywords" content="Promise,generator,curry">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 Generator">
-<meta property="og:url" content="http://spaceman007.github.io/2018/03/21/generator/index.html">
+<meta property="og:url" content="https://spaceman007.github.io/2018/03/21/generator/index.html">
 <meta property="og:site_name" content="Spaceman007 的空間站">
 <meta property="og:description" content="理解 Generator (生成器)generator 和 iterator 的概念非常類似，同樣都是調 next() 獲取當前元素和當前狀態，同樣都是惰性求值，同樣可以用 for...of 遍歷。 按我的理解，generator 就是一種 iterator，只不過 generator 是由函數轉換成的 itarator，這種轉換是 es6 內部提供的，而將一個函數轉爲 generator，只需藉">
 <meta property="og:locale" content="zh-Hans">
@@ -126,7 +126,7 @@
 
 
 
-  <link rel="canonical" href="http://spaceman007.github.io/2018/03/21/generator/"/>
+  <link rel="canonical" href="https://spaceman007.github.io/2018/03/21/generator/"/>
 
 
 
@@ -317,7 +317,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://spaceman007.github.io/2018/03/21/generator/">
+    <link itemprop="mainEntityOfPage" href="https://spaceman007.github.io/2018/03/21/generator/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="spaceman007">
@@ -416,6 +416,17 @@
           
 
           
+          
+             <span id="/2018/03/21/generator/" class="leancloud_visitors" data-flag-title="理解 Generator">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Views: </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
           
 
           
@@ -530,9 +541,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/generator/" rel="tag"># generator</a>
-          
             <a href="/tags/Promise/" rel="tag"># Promise</a>
+          
+            <a href="/tags/generator/" rel="tag"># generator</a>
           
             <a href="/tags/curry/" rel="tag"># curry</a>
           
@@ -940,6 +951,102 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9TiQCKR0hYpakWguHJhJISP9-gzGzoHsz", "r2S8dhmtFCftLfd4ez6iDQcm");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            
+            counter.save(null, {
+              success: function(counter) {
+                
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.get('time'));
+                
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! See more at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see here how to solve it: https://github.com/theme-next/hexo-leancloud-counter-security. \n But you also can use LeanCloud without security, by set \'security\' option to \'false\'.');
+            
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
