@@ -4,8 +4,8 @@
 
     
   <url>
-    <loc>http://spaceman007.github.io/blog/2018/01/23/hexo/</loc>
-    <lastmod>2018-07-15T12:56:49.000Z</lastmod>
+    <loc>http://spaceman007.github.io/2018/01/23/hexo/</loc>
+    <lastmod>2018-07-15T13:38:18.000Z</lastmod>
     <data>
         <display>
         <title>用hexo搭建個人博客</title>
@@ -21,7 +21,7 @@
 
     
   <url>
-    <loc>http://spaceman007.github.io/blog/2018/03/12/promise/</loc>
+    <loc>http://spaceman007.github.io/2018/03/12/promise/</loc>
     <lastmod>2018-07-15T12:09:54.000Z</lastmod>
     <data>
         <display>
@@ -35,7 +35,7 @@
          
            
              
-              <breadCrumb title="es6" url="http://spaceman007.github.io/blog/categories/es6/"/>
+              <breadCrumb title="es6" url="http://spaceman007.github.io/categories/es6/"/>
           
         </display>
     </data>
@@ -43,7 +43,7 @@
 
     
   <url>
-    <loc>http://spaceman007.github.io/blog/2018/03/21/generator/</loc>
+    <loc>http://spaceman007.github.io/2018/03/21/generator/</loc>
     <lastmod>2018-07-15T12:09:37.000Z</lastmod>
     <data>
         <display>
@@ -59,7 +59,7 @@
          
            
              
-              <breadCrumb title="es6" url="http://spaceman007.github.io/blog/categories/es6/"/>
+              <breadCrumb title="es6" url="http://spaceman007.github.io/categories/es6/"/>
           
         </display>
     </data>
