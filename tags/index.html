@@ -355,15 +355,7 @@
                 
                 
                   
-                
-                  
                     
-                  
-                
-                  
-                
-                  
-                
                   
                 
                   
@@ -406,6 +398,13 @@
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -477,14 +476,6 @@
                 <div class="site-state-item site-state-tags">
                   <a href="/blog/tags/index.html">
                     
-                    
-                      
-                    
-                      
-                    
-                      
-                    
-                      
                     
                       
                     
@@ -692,6 +683,43 @@
 
 
 
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'spaceman007',
+            repo: 'Spaceman007.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd53e6e76e788fe09c3dcf9a1b34965d7dc4ff2fe',
+            
+                client_id: '1a559d21c9e2a92722e2'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 

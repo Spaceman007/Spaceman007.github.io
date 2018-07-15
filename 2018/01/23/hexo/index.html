@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Spaceman007 的空間站">
 <meta property="og:description" content="使用12345$ npm install hexo-cli -g$ hexo init my-blog$ cd my-blog$ npm install$ hexo server 1. 常用命令   命令 全寫 含義     hexo g hexo generate 生成靜態文件   hexo s hexo server 啓動本地web服務，用於預覽   hexo d hexo deploy 部署">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-15T04:27:13.000Z">
+<meta property="og:updated_time" content="2018-07-15T12:56:49.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="用hexo搭建個人博客">
 <meta name="twitter:description" content="使用12345$ npm install hexo-cli -g$ hexo init my-blog$ cd my-blog$ npm install$ hexo server 1. 常用命令   命令 全寫 含義     hexo g hexo generate 生成靜態文件   hexo s hexo server 啓動本地web服務，用於預覽   hexo d hexo deploy 部署">
@@ -376,7 +376,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2018-07-15 12:27:13" itemprop="dateModified" datetime="2018-07-15T12:27:13+08:00">2018-07-15</time>
+                <time title="Modified: 2018-07-15 20:56:49" itemprop="dateModified" datetime="2018-07-15T20:56:49+08:00">2018-07-15</time>
               
             
           </span>
@@ -384,6 +384,16 @@
           
 
           
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/blog/2018/01/23/hexo/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">Comments: </span> <span class="post-comments-count gitment-comments-count" data-xid="/blog/2018/01/23/hexo/" itemprop="commentsCount"></span>
+                </a>
+              </span>
             
           
 
@@ -447,11 +457,22 @@
 </tbody>
 </table>
 <h2 id="2-配置說明（-config-yml）"><a href="#2-配置說明（-config-yml）" class="headerlink" title="2. 配置說明（_config.yml）"></a>2. 配置說明（_config.yml）</h2><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">language:</span> <span class="string">zh-Hans</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shenzhen</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 網址</span></span><br><span class="line"><span class="attr">url:</span> <span class="attr">https://spaceman007.github.io</span></span><br><span class="line"><span class="attr">root:</span> <span class="string">/blog</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 頭像, 將 avatar.jpg 放到 source/images 下</span></span><br><span class="line"><span class="attr">avatar:</span> <span class="string">/images/avatar.jpg</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 代碼塊設置</span></span><br><span class="line"><span class="attr">highlight:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span> <span class="comment"># 使用代碼高亮</span></span><br><span class="line"><span class="attr">  line_number:</span> <span class="literal">true</span> <span class="comment"># 顯示行號</span></span><br><span class="line"><span class="attr">  auto_detect:</span> <span class="literal">true</span> <span class="comment"># 自動檢測語言</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分頁配置</span></span><br><span class="line"><span class="attr">per_page:</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 部署配置</span></span><br><span class="line"><span class="comment"># 需要先安裝 hexo-deployer-git: `npm install hexo-deployer-git --save`</span></span><br><span class="line"><span class="attr">deploy:</span></span><br><span class="line"><span class="attr">  type:</span> <span class="string">git</span></span><br><span class="line"><span class="attr">  repo:</span></span><br><span class="line">    <span class="comment"># 部署到coding, 曲線註釋，可同時部署</span></span><br><span class="line">    <span class="comment"># coding: git@git.coding.net:spaceman007/blog.git,master</span></span><br><span class="line">    <span class="string">git@github.com:spaceman007.github.io.git,master</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-1-sitemap"><a href="#2-1-sitemap" class="headerlink" title="2.1 sitemap"></a>2.1 sitemap</h3><p>要讓搜索引擎搜索到我們的博客，需要添加 sitemap.</p>
+<p><strong>如何生成 sitemmap?</strong></p>
+<p>只需安裝<code>hexo-generator-sitemap</code> 和 <code>hexo-generator-baidu-sitemap</code> 即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> yarn add hexo-generator-sitemap hexo-generator-baidu-sitemap</span><br></pre></td></tr></table></figure>
+<p>之後，當我們 <code>hexo g</code> 時，就會在 <code>public</code> 目錄下生成 <code>sitemap.xml</code> 和 <code>baidusitemap.xml</code></p>
+<p><strong>提交鏈接</strong></p>
+<p>點擊 <a href="https://ziyuan.baidu.com/linksubmit/url" target="_blank" rel="noopener">百度链接提交</a>，將網址提交給百度。</p>
 <h2 id="3-使用主題"><a href="#3-使用主題" class="headerlink" title="3. 使用主題"></a>3. 使用主題</h2><h3 id="3-1-Next主題"><a href="#3-1-Next主題" class="headerlink" title="3.1 Next主題"></a>3.1 Next主題</h3><p><strong>下載主題</strong>: <code>$ git clone https://github.com/theme-next/hexo-theme-next</code></p>
 <p><strong>啓用主題</strong>:</p>
 <h4 id="3-1-1-編輯根路徑下的-config-yml-修改如下"><a href="#3-1-1-編輯根路徑下的-config-yml-修改如下" class="headerlink" title="3.1.1 編輯根路徑下的 _config.yml, 修改如下"></a>3.1.1 編輯根路徑下的 <code>_config.yml</code>, 修改如下</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># theme</span></span><br><span class="line"><span class="comment"># theme: false</span></span><br><span class="line"><span class="comment"># theme: landscape</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
 <h4 id="3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲"><a href="#3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲" class="headerlink" title="3.1.2 在themes/next下，編輯 _config.yml, 選用 Pisces, 修改爲"></a>3.1.2 在themes/next下，編輯 <code>_config.yml</code>, 選用 Pisces, 修改爲</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#theme: Muse</span></span><br><span class="line"><span class="comment">#theme: Mist</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">Pisces</span></span><br></pre></td></tr></table></figure>
 <h4 id="3-1-3-菜單設置"><a href="#3-1-3-菜單設置" class="headerlink" title="3.1.3 菜單設置"></a>3.1.3 菜單設置</h4><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line"><span class="attr">  home:</span> <span class="string">/</span></span><br><span class="line"><span class="attr">  categories:</span> <span class="string">/categories</span></span><br><span class="line"><span class="attr">  archives:</span> <span class="string">/archives</span></span><br><span class="line"><span class="attr">  tags:</span> <span class="string">/tags</span></span><br><span class="line"><span class="attr">  about:</span> <span class="string">/about</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404.html</span></span><br></pre></td></tr></table></figure>
+<p>這時，如果點擊 about，將會發生 404 錯誤。需要為 tags, categories 生成頁面：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new page tags</span><br><span class="line"><span class="meta">$</span> hexo new page categories</span><br><span class="line"><span class="meta">$</span> hexo new about</span><br></pre></td></tr></table></figure>
+<p>在些文章時，設置頭部：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: 理解 Generator</span><br><span class="line">date: 2018-03-21 17:29:53</span><br><span class="line">tags:</span><br><span class="line">  - generator</span><br><span class="line">  - Promise</span><br><span class="line">  - curry</span><br><span class="line">categories:</span><br><span class="line">  - es6</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 <h4 id="3-1-4-文章代碼主題設置"><a href="#3-1-4-文章代碼主題設置" class="headerlink" title="3.1.4 文章代碼主題設置"></a>3.1.4 文章代碼主題設置</h4><blockquote>
 <p>Next主题总共支持5种主题，默认主题是白色的normal。可以通过修改next主题下的_config.yml的highlight字段，来设置代码主题</p>
 </blockquote>
@@ -459,9 +480,7 @@
   <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line"><span class="attr">  Github:</span> <span class="attr">https://www.github.com/spaceman007</span></span><br></pre></td></tr></table></figure>
 <h4 id="3-1-6-首頁文章摘要設置"><a href="#3-1-6-首頁文章摘要設置" class="headerlink" title="3.1.6 首頁文章摘要設置"></a>3.1.6 首頁文章摘要設置</h4><p>  next默认首页文章显示所有内容，想要只显示摘要，修改next主题下_config.yml的auto_excerpt字段:</p>
   <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  length:</span> <span class="number">150</span> <span class="comment"># 顯示摘要字數</span></span><br></pre></td></tr></table></figure>
-<h4 id="3-1-7-添加菜單頁面"><a href="#3-1-7-添加菜單頁面" class="headerlink" title="3.1.7 添加菜單頁面"></a>3.1.7 添加菜單頁面</h4><p>  做完上一步会发现在首页点击菜单上的分类、归档等页面都会报错，提示没有该页面，所以需要添加各个菜单页面，定位到站点文件夹，在终端中执行新建页面指令：</p>
-  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span> hexo new page tags</span><br><span class="line"><span class="meta">$</span> hexo new page categories</span><br><span class="line"><span class="meta">$</span> hexo new page about</span><br></pre></td></tr></table></figure>
-<h4 id="3-1-8-使用gitcommet添加評論"><a href="#3-1-8-使用gitcommet添加評論" class="headerlink" title="3.1.8 使用gitcommet添加評論"></a>3.1.8 使用gitcommet添加評論</h4><p>需要在<a href="https://github.com/settings/developers" target="_blank" rel="noopener">這裏</a>申請一個 OAuth App, 並將信息填入 next/_config.yml 中:<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitment:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  github_user:</span> <span class="string">spaceman007</span></span><br><span class="line"><span class="attr">  github_repo:</span> <span class="string">Spaceman007.github.io</span></span><br><span class="line"><span class="attr">  client_id:</span> <span class="string">剛申請的</span></span><br><span class="line"><span class="attr">  client_secret:</span> <span class="string">剛申請的</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="3-1-7-使用gitment添加評論"><a href="#3-1-7-使用gitment添加評論" class="headerlink" title="3.1.7 使用gitment添加評論"></a>3.1.7 使用gitment添加評論</h4><p>需要在<a href="https://github.com/settings/developers" target="_blank" rel="noopener">這裏</a>申請一個 OAuth App, 並將信息填入 next/_config.yml 中:<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">gitment:</span></span><br><span class="line"><span class="attr">  enable:</span> <span class="literal">true</span></span><br><span class="line"><span class="attr">  github_user:</span> <span class="string">spaceman007</span></span><br><span class="line"><span class="attr">  github_repo:</span> <span class="string">Spaceman007.github.io</span></span><br><span class="line"><span class="attr">  client_id:</span> <span class="string">剛申請的</span></span><br><span class="line"><span class="attr">  client_secret:</span> <span class="string">剛申請的</span></span><br></pre></td></tr></table></figure></p>
 <p>這時，在本地運行，評論區是禁止的，<code>hexo d</code> 發佈到github上就可以了。</p>
 <h1 id="資源"><a href="#資源" class="headerlink" title="資源"></a>資源</h1><ul>
 <li><a href="https://hexo.io/" target="_blank" rel="noopener">hexo官網</a></li>
@@ -535,6 +554,13 @@
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
 
   
 
@@ -626,14 +652,6 @@
                     
                       
                     
-                      
-                    
-                      
-                    
-                      
-                    
-                      
-                    
                     <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
@@ -679,7 +697,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常用命令"><span class="nav-number">1.1.</span> <span class="nav-text">1. 常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置說明（-config-yml）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置說明（_config.yml）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-使用主題"><span class="nav-number">1.3.</span> <span class="nav-text">3. 使用主題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Next主題"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Next主題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-編輯根路徑下的-config-yml-修改如下"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.1.1 編輯根路徑下的 _config.yml, 修改如下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">3.1.2 在themes/next下，編輯 _config.yml, 選用 Pisces, 修改爲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-菜單設置"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">3.1.3 菜單設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-文章代碼主題設置"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">3.1.4 文章代碼主題設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5-社交連接設置"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">3.1.5 社交連接設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-首頁文章摘要設置"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">3.1.6 首頁文章摘要設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-7-添加菜單頁面"><span class="nav-number">1.3.1.7.</span> <span class="nav-text">3.1.7 添加菜單頁面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-8-使用gitcommet添加評論"><span class="nav-number">1.3.1.8.</span> <span class="nav-text">3.1.8 使用gitcommet添加評論</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#資源"><span class="nav-number">2.</span> <span class="nav-text">資源</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">1.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常用命令"><span class="nav-number">1.1.</span> <span class="nav-text">1. 常用命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置說明（-config-yml）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 配置說明（_config.yml）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-sitemap"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 sitemap</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-使用主題"><span class="nav-number">1.3.</span> <span class="nav-text">3. 使用主題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Next主題"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Next主題</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1-編輯根路徑下的-config-yml-修改如下"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.1.1 編輯根路徑下的 _config.yml, 修改如下</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-在themes-next下，編輯-config-yml-選用-Pisces-修改爲"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">3.1.2 在themes/next下，編輯 _config.yml, 選用 Pisces, 修改爲</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-菜單設置"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">3.1.3 菜單設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-4-文章代碼主題設置"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">3.1.4 文章代碼主題設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-5-社交連接設置"><span class="nav-number">1.3.1.5.</span> <span class="nav-text">3.1.5 社交連接設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-6-首頁文章摘要設置"><span class="nav-number">1.3.1.6.</span> <span class="nav-text">3.1.6 首頁文章摘要設置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-7-使用gitment添加評論"><span class="nav-number">1.3.1.7.</span> <span class="nav-text">3.1.7 使用gitment添加評論</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#資源"><span class="nav-number">2.</span> <span class="nav-text">資源</span></a></li></ol></div>
             
 
           </div>
@@ -846,6 +864,43 @@
 
 
 
+
+
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: window.location.pathname,
+            owner: 'spaceman007',
+            repo: 'Spaceman007.github.io',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: 'd53e6e76e788fe09c3dcf9a1b34965d7dc4ff2fe',
+            
+                client_id: '1a559d21c9e2a92722e2'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
+    
 
 
 
